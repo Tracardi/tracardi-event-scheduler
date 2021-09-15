@@ -1,0 +1,2 @@
+recursive-include tracardi_event_scheduler/model *
+recursive-include tracardi_event_scheduler/service *
