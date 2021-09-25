@@ -1,19 +1,18 @@
 import time
 
 from tracardi.domain.context import Context
+from tracardi.domain.task import Task, TaskEvent
 from tracardi_plugin_sdk.domain.register import Plugin, Spec, MetaData
 from tracardi_plugin_sdk.action_runner import ActionRunner
 from uuid import uuid4
 
 from pytimeparse import parse
-from tracardi.domain.entity import Entity
 from tracardi.domain.metadata import Metadata
 from tracardi.domain.time import Time
 from tracardi.service.storage.factory import StorageFor
 from tracardi_plugin_sdk.domain.result import Result
 
 from tracardi_event_scheduler.model.config import Config
-from tracardi_event_scheduler.model.task import TaskEvent, Task
 from tracardi_event_scheduler.service.network import local_ip
 
 
@@ -27,7 +26,8 @@ class EventSchedulerAction(ActionRunner):
 
         if self.debug:
             self.console.warning("Running scheduler in DEBUG MODE will not schedule new tasks.")
-            return Result(port="payload", value={"message": "Running scheduler in DEBUG MODE will not schedule new tasks."})
+            return Result(port="payload", value={"message": "Running scheduler in DEBUG MODE will not "
+                                                            "schedule new tasks."})
 
         now = time.time()
         future_time = now + self.postpone
@@ -60,7 +60,7 @@ def register() -> Plugin:
             className='EventSchedulerAction',
             inputs=["payload"],
             outputs=["payload"],
-            version='0.1',
+            version='0.1.1',
             license="MIT",
             author="Risto Kowaczewski",
             init={

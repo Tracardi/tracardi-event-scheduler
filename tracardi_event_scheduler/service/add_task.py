@@ -6,10 +6,10 @@ from uuid import uuid4
 from tracardi.domain.context import Context
 from tracardi.domain.entity import Entity
 from tracardi.domain.metadata import Metadata
+from tracardi.domain.task import Task, TaskEvent
 from tracardi.domain.time import Time
 from tracardi.service.storage.factory import StorageFor
 
-from tracardi_event_scheduler.model.task import TaskEvent, Task
 from tracardi_event_scheduler.service.network import local_ip
 
 
