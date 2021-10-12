@@ -1,4 +1,4 @@
 asyncio
-tracardi_plugin_sdk
+tracardi_plugin_sdk>=0.6.18
 tracardi
 pytimeparse
