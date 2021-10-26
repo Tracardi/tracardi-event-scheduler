@@ -2,12 +2,9 @@ import time
 
 from tracardi.domain.context import Context
 from tracardi.domain.task import Task, TaskEvent
-from tracardi_plugin_sdk.domain.register import Plugin, Spec, MetaData, Form, FormGroup, FormField, FormComponent, \
-    FormFieldValidation
+from tracardi_plugin_sdk.domain.register import Plugin, Spec, MetaData, Form, FormGroup, FormField, FormComponent
 from tracardi_plugin_sdk.action_runner import ActionRunner
 from uuid import uuid4
-
-from pytimeparse import parse
 from tracardi.domain.metadata import Metadata
 from tracardi.domain.time import Time
 from tracardi.service.storage.factory import StorageFor
@@ -17,18 +14,21 @@ from tracardi_event_scheduler.model.config import Config
 from tracardi_event_scheduler.service.network import local_ip
 
 
+def validate(config: dict) -> Config:
+    return Config(**config)
+
+
 class EventSchedulerAction(ActionRunner):
 
     def __init__(self, **kwargs):
-        self.config = Config(**kwargs)
-        self.postpone = parse(self.config.postpone)
+        self.config = validate(kwargs)
+        self.postpone = self.config.postpone
 
     async def run(self, payload):
-
-        # if self.debug:
-        #     self.console.warning("Running scheduler in DEBUG MODE will not schedule new tasks.")
-        #     return Result(port="payload", value={"message": "Running scheduler in DEBUG MODE will not "
-        #                                                     "schedule new tasks."})
+        if self.debug:
+            self.console.warning("Running scheduler in DEBUG MODE will not schedule new tasks.")
+            return Result(port="payload", value={"message": "Running scheduler in DEBUG MODE will not "
+                                                            "schedule new tasks."})
 
         now = time.time()
         future_time = now + self.postpone
@@ -61,9 +61,10 @@ def register() -> Plugin:
             className='EventSchedulerAction',
             inputs=["payload"],
             outputs=["payload"],
-            version='0.1.2',
+            version='0.6.0',
             license="MIT",
             author="Risto Kowaczewski",
+            manual="event_scheduler_action",
             init={
                 "event_type": None,
                 "properties": {},
@@ -76,11 +77,7 @@ def register() -> Plugin:
                             id="event_type",
                             name="Event type",
                             description="Type event type you would like to schedule.",
-                            component=FormComponent(type="text", props={"label": "Event type"}),
-                            validation=FormFieldValidation(
-                                regex=r"^[a-zA-Z0-9\@\.\-_]+$",
-                                message="This field must contain only letters, digits, dashes, or under score."
-                            )
+                            component=FormComponent(type="text", props={"label": "Event type"})
                         ),
                         FormField(
                             id="properties",
@@ -93,11 +90,7 @@ def register() -> Plugin:
                             name="Time to postpone event",
                             description="Type how much time you would like the event to be postponed. "
                                         "e.g +1m means 1 minute. +1s means - 1 second, etc.",
-                            component=FormComponent(type="text", props={"label": "Time to postpone the event"}),
-                            validation=FormFieldValidation(
-                                regex=r"^[\+\-][0-9]+(m|s|h|d)$",
-                                message="This field must be in form of +(digit)[m | s | d | y]."
-                            )
+                            component=FormComponent(type="text", props={"label": "Time to postpone the event"})
                         ),
                     ]
                 ),
@@ -106,7 +99,7 @@ def register() -> Plugin:
         ),
         metadata=MetaData(
             name='Event scheduler',
-            desc='Schedule event to trigger after defined time.',
+            desc='Schedule event to trigger after defined period of time.',
             type='flowNode',
             width=200,
             height=100,
