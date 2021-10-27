@@ -67,7 +67,7 @@ def register() -> Plugin:
             manual="event_scheduler_action",
             init={
                 "event_type": None,
-                "properties": {},
+                "properties": "{}",
                 "postpone": "+1m"
             },
             form=Form(groups=[
