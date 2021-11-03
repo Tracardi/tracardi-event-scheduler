@@ -61,7 +61,7 @@ def register() -> Plugin:
             className='EventSchedulerAction',
             inputs=["payload"],
             outputs=["payload"],
-            version='0.6.0',
+            version='0.6.1',
             license="MIT",
             author="Risto Kowaczewski",
             manual="event_scheduler_action",
