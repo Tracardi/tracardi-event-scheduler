@@ -1,6 +1,5 @@
 import time
-
-from tracardi.domain.context import Context
+from tracardi.domain.entity import Entity
 from tracardi.domain.task import Task, TaskEvent
 from tracardi_plugin_sdk.domain.register import Plugin, Spec, MetaData, Form, FormGroup, FormField, FormComponent
 from tracardi_plugin_sdk.action_runner import ActionRunner
@@ -40,10 +39,10 @@ class EventSchedulerAction(ActionRunner):
                 id=str(uuid4()),
                 type=self.config.event_type,
                 properties=self.config.properties,
-                source=self.event.source,
-                session=self.session,
-                profile=self.profile,
-                context=self.session.context if self.session is not None and self.session.context else Context(),
+                source=Entity(id=self.event.source.id),
+                session=Entity(id=self.session.id),
+                profile=Entity(id=self.profile.id),
+                context=self.session.context if self.session is not None and self.session.context else {},
             ),
             event_type="test",
             status='pending'

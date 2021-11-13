@@ -4,4 +4,4 @@ python -m twine upload dist/*
 
 rm -rf dist
 rm -rf build
-rm -rf tracardi_mongodb_connector.egg-info
+rm -rf tracardi_event_scheduler.egg-info
