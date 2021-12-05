@@ -1,7 +1,8 @@
 import time
 from tracardi.domain.entity import Entity
 from tracardi.domain.task import Task, TaskEvent
-from tracardi_plugin_sdk.domain.register import Plugin, Spec, MetaData, Form, FormGroup, FormField, FormComponent
+from tracardi_plugin_sdk.domain.register import Plugin, Spec, MetaData, Form, FormGroup, FormField, FormComponent, \
+    Documentation, PortDoc
 from tracardi_plugin_sdk.action_runner import ActionRunner
 from uuid import uuid4
 from tracardi.domain.metadata import Metadata
@@ -60,7 +61,7 @@ def register() -> Plugin:
             className='EventSchedulerAction',
             inputs=["payload"],
             outputs=["payload"],
-            version='0.6.1',
+            version='0.6.0.1',
             license="MIT",
             author="Risto Kowaczewski",
             manual="event_scheduler_action",
@@ -103,6 +104,14 @@ def register() -> Plugin:
             width=200,
             height=100,
             icon='event',
-            group=["Input/Output"]
+            group=["Input/Output"],
+            documentation=Documentation(
+                inputs={
+                    "payload": PortDoc(desc="This port takes any JSON like object.")
+                },
+                outputs={
+                    "payload": PortDoc(desc="Returns scheduled task.")
+                }
+            ),
         )
     )

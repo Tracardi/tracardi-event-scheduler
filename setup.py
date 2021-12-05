@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='tracardi-event-scheduler',
-    version='0.6.1',
+    version='0.6.0.1',
     description='This plugin schedules event at given time.',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -13,7 +13,7 @@ setup(
     author_email='risto.kowaczewski@gmail.com',
     packages=['tracardi_event_scheduler'],
     install_requires=[
-        'tracardi_plugin_sdk>=0.6.18',
+        'tracardi_plugin_sdk>=0.6.30',
         'asyncio',
         'tracardi',
         'pytimeparse'
